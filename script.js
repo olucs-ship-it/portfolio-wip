@@ -405,17 +405,31 @@
   }
 
   /* ==========================================================================
-     6b. Hero Name Per-Letter Jitter
+     6b. Headings Per-Letter Jitter
      ========================================================================== */
-  function initNameJitter() {
-    const title = document.querySelector('.hero-title');
-    if (!title) return;
-
-    // Preserve the full, readable name for assistive technology.
-    title.setAttribute('aria-label', title.textContent.replace(/\s+/g, ' ').trim());
+  function initHeadingJitter() {
+    const headings = document.querySelectorAll(
+      '#main-content h1, #main-content h2, #main-content h3, #main-content h4'
+    );
+    if (!headings.length) return;
 
     const randomBetween = (min, max) => min + Math.random() * (max - min);
 
+    const createLetter = (char) => {
+      const span = document.createElement('span');
+      span.className = 'jitter-letter';
+      span.textContent = char;
+      span.style.setProperty('--jx', randomBetween(-3, 3).toFixed(2) + 'px');
+      span.style.setProperty('--jy', randomBetween(-3, 3).toFixed(2) + 'px');
+      span.style.setProperty('--jr', randomBetween(-6, 6).toFixed(2) + 'deg');
+      span.style.setProperty('--jit-dur', Math.round(randomBetween(160, 360)) + 'ms');
+      span.style.setProperty('--jit-delay', Math.round(randomBetween(0, 180)) + 'ms');
+      return span;
+    };
+
+    // Recursively wrap every character in an inline-block span, grouping letters
+    // into nowrap word spans so words never break across lines. Spaces and
+    // structural elements such as <br> are preserved.
     const wrapLetters = (node) => {
       Array.from(node.childNodes).forEach(child => {
         if (child.nodeType === Node.TEXT_NODE) {
@@ -423,21 +437,20 @@
           if (!text) return;
 
           const frag = document.createDocumentFragment();
+          let word = null;
           for (const char of text) {
             if (/\s/.test(char)) {
+              if (word) { frag.appendChild(word); word = null; }
               frag.appendChild(document.createTextNode(char));
-              continue;
+            } else {
+              if (!word) {
+                word = document.createElement('span');
+                word.className = 'jitter-word';
+              }
+              word.appendChild(createLetter(char));
             }
-            const span = document.createElement('span');
-            span.className = 'jitter-letter';
-            span.textContent = char;
-            span.style.setProperty('--jx', randomBetween(-3, 3).toFixed(2) + 'px');
-            span.style.setProperty('--jy', randomBetween(-3, 3).toFixed(2) + 'px');
-            span.style.setProperty('--jr', randomBetween(-6, 6).toFixed(2) + 'deg');
-            span.style.setProperty('--jit-dur', Math.round(randomBetween(160, 360)) + 'ms');
-            span.style.setProperty('--jit-delay', Math.round(randomBetween(0, 180)) + 'ms');
-            frag.appendChild(span);
           }
+          if (word) frag.appendChild(word);
           node.replaceChild(frag, child);
         } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'BR') {
           wrapLetters(child);
@@ -445,7 +458,17 @@
       });
     };
 
-    wrapLetters(title);
+    headings.forEach(heading => {
+      if (heading.querySelector('.jitter-letter')) return;
+
+      const label = heading.textContent.replace(/\s+/g, ' ').trim();
+      if (!label) return;
+
+      // Preserve the full, readable text for assistive technology.
+      heading.setAttribute('aria-label', label);
+      heading.classList.add('jitter-group');
+      wrapLetters(heading);
+    });
   }
 
   /* ==========================================================================
@@ -1328,7 +1351,7 @@
     initTheme();
     initAvailabilitySystem();
     initBentoFlip();
-    initNameJitter();
+    initHeadingJitter();
     initHeroCanvas();
     initProjectShowcase();
     initPortfolioAssistant();

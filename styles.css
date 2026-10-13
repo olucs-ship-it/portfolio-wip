@@ -662,13 +662,18 @@ button {
   font-weight: 400;
 }
 
-/* Hero Name — Random Per-Letter Jitter on Hover */
+/* Headings — Random Per-Letter Jitter on Hover */
+.jitter-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .jitter-letter {
   display: inline-block;
   will-change: transform;
 }
 
-.hero-title:hover .jitter-letter {
+.jitter-group:hover .jitter-letter {
   animation: letter-jitter var(--jit-dur, 220ms) ease-in-out infinite alternate;
   animation-delay: var(--jit-delay, 0ms);
 }
@@ -820,6 +825,7 @@ button {
 
 .bento-action-toolbar {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-md);
   margin-top: var(--spacing-md);
 }
@@ -2534,6 +2540,17 @@ button {
 /* --------------------------------------------------------------------------
    15. Responsive Breakpoints
    -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .header-container {
+    gap: var(--spacing-sm);
+  }
+
+  .nav-link {
+    font-size: 0.8125rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-container {
     grid-template-columns: 1fr;
@@ -2564,9 +2581,8 @@ button {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
   }
-}
 
-@media (max-width: 768px) {
+  /* Collapse to the mobile navigation on tablets to avoid header overflow */
   .nav-desktop {
     display: none;
   }
@@ -2578,17 +2594,45 @@ button {
   .monogram-text {
     display: none;
   }
+}
 
-  .hero-section {
-    padding: var(--spacing-xl) var(--spacing-md);
+@media (max-width: 900px) {
+  .approach-pipeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0.75rem var(--spacing-md);
+  }
+
+  /* Reduce heavy section rhythm on smaller screens */
+  .hero-section,
+  .bento-section,
+  .about-section,
+  .work-section,
+  .approach-section,
+  .assistant-section,
+  .contact-section {
+    padding: var(--spacing-2xl) var(--spacing-md);
   }
 
   .hero-title {
     font-size: 2.5rem;
   }
 
+  #hero-interactive-canvas {
+    height: 300px;
+  }
+
   .bento-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
 
   .tile-lavender, .tile-sage, .tile-blue, .tile-yellow,
@@ -2596,8 +2640,14 @@ button {
     grid-column: span 1;
   }
 
+  .bento-card {
+    min-height: 240px;
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
   }
 
   .approach-pipeline {
@@ -2616,8 +2666,149 @@ button {
     flex-direction: column;
   }
 
+  .modal-card {
+    padding: var(--spacing-lg);
+  }
+
   .footer-top-row, .footer-bottom-row {
     flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 3.5rem;
+  }
+
+  .header-container {
+    padding: 0.65rem var(--spacing-md);
+    gap: var(--spacing-xs);
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .brand-monogram {
+    gap: 4px;
+  }
+
+  .hero-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .hero-title {
+    font-size: 2.35rem;
+  }
+
+  .hero-eyebrow {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .hero-statement {
+    font-size: 1rem;
+    padding-left: var(--spacing-sm);
+  }
+
+  .hero-meta-bar {
+    gap: var(--spacing-lg);
+  }
+
+  #hero-interactive-canvas {
+    height: 240px;
+  }
+
+  .canvas-tag {
+    display: none;
+  }
+
+  .bento-action-toolbar {
+    gap: var(--spacing-sm);
+  }
+
+  .assistant-card, .form-container-card,
+  .contact-details-list {
+    padding: var(--spacing-md);
+  }
+
+  .assistant-heading {
+    font-size: 1.85rem;
+  }
+
+  .section-title {
+    font-size: 2.1rem;
+  }
+
+  .footer-nav {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .toast-container {
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    bottom: var(--spacing-md);
+  }
+
+  .toast {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-container {
+    padding: 0.6rem var(--spacing-sm);
+  }
+
+  .monogram-frame {
+    width: 36px;
+    height: 36px;
+    font-size: 1.125rem;
+  }
+
+  /* Compact the header actions into icon-only buttons */
+  .availability-pill {
+    gap: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .availability-pill .status-label,
+  .availability-pill .status-edit-hint {
+    display: none;
+  }
+
+  .assistant-pill-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .assistant-pill-btn > span:not(.ai-sparkle-icon) {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-cta-group {
+    gap: var(--spacing-sm);
+  }
+
+  .project-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom-row {
     align-items: flex-start;
   }
 }
