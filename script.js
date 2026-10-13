@@ -69,7 +69,7 @@
       agentic: ['LLM APIs', 'LangChain Concepts', 'Prompt Engineering', 'Cursor']
     },
     contact: {
-      email: 'olusegun.adeleye.design@example.com',
+      email: 'segunmanuelleye@gmail.com',
       location: 'London / Remote Worldwide'
     }
   };
@@ -541,14 +541,14 @@
             <p>
               Rather than overwhelming users with complex menus, Scribble features heuristic note clustering and an agentic summarizer that groups disparate ideas into actionable sprint themes.
             </p>
-            <div class="spec-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; font-size:13px; background:#F8F8F5; padding:12px; border-radius:8px;">
+            <div class="spec-grid">
               <div><strong>Front-End:</strong> Vanilla JS / CSS Grid</div>
               <div><strong>Storage:</strong> LocalStorage API</div>
               <div><strong>Status:</strong> Active Interactive Prototype</div>
               <div><strong>Licence:</strong> Open Atelier Concept</div>
             </div>
             <h4>Core Innovations</h4>
-            <ul style="padding-left:18px; font-size:13px; line-height:1.6; color:#555;">
+            <ul class="modal-detail-list">
               <li>Frictionless spatial drag & drop with mouse, touch, and trackpad.</li>
               <li>Markdown formatting and color-coded mood categories.</li>
               <li>Complete local data privacy with instantaneous restore.</li>
@@ -569,14 +569,14 @@
             <p>
               The cockpit visualizes agent state machines, step-by-step reasoning tokens, and execution cost telemetry in a unified editorial interface.
             </p>
-            <div class="spec-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; font-size:13px; background:#F8F8F5; padding:12px; border-radius:8px;">
+            <div class="spec-grid">
               <div><strong>State System:</strong> Finite State Machine (FSM)</div>
               <div><strong>Governance:</strong> Explicit Human Approval Gates</div>
               <div><strong>Telemetry:</strong> Live Step Execution Logs</div>
               <div><strong>Target Users:</strong> Product Teams &amp; AI Engineers</div>
             </div>
             <h4>Human Safeguards</h4>
-            <p style="font-size:13px; color:#555;">
+            <p>
               Gated authorization prompts prevent unintended database operations or API expenditures, reinforcing user agency over automated logic.
             </p>
           </div>
@@ -595,7 +595,7 @@
             <p>
               Changes made in PixelKit generate production-ready CSS Custom Properties that can be copied directly into any front-end project without runtime overhead.
             </p>
-            <div class="spec-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; font-size:13px; background:#F8F8F5; padding:12px; border-radius:8px;">
+            <div class="spec-grid">
               <div><strong>Compliance:</strong> WCAG 2.1 AA &amp; AAA</div>
               <div><strong>Export:</strong> CSS Custom Properties (:root)</div>
               <div><strong>Performance:</strong> Zero runtime bundle</div>
@@ -624,18 +624,18 @@
       if (bodyEl) {
         bodyEl.innerHTML = `
           <div class="mini-demo-sandbox">
-            <p style="font-size:13px; color:#666; margin-bottom:12px;">
+            <p class="mini-demo-note">
               Add a quick note to this live interactive canvas to experience the Scribble model:
             </p>
-            <div style="display:flex; gap:8px; margin-bottom:14px;">
-              <input type="text" id="demo-note-input" placeholder="Type a concept or note..." style="flex:1; padding:8px 12px; border:1px solid #D5D5CE; border-radius:6px; font-size:13px;">
-              <button type="button" id="demo-add-note-btn" class="btn btn-primary" style="padding:8px 16px; font-size:13px;">Add Note</button>
+            <div class="demo-input-row">
+              <input type="text" id="demo-note-input" class="demo-input" placeholder="Type a concept or note...">
+              <button type="button" id="demo-add-note-btn" class="btn btn-primary">Add Note</button>
             </div>
-            <div id="demo-notes-canvas" style="min-height:180px; background:#FAF9F6; border:1px solid #E7E7E2; border-radius:8px; padding:12px; display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start;">
-              <div class="demo-stick-note" style="background:#FEF9C3; border:1px solid #FDE047; padding:8px 12px; border-radius:6px; font-size:12px; max-width:180px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+            <div id="demo-notes-canvas" class="demo-notes-canvas">
+              <div class="demo-stick-note" style="background:#FEF9C3; border-color:#FDE047;">
                 <strong>✦ UX Discovery:</strong> Interview 8 designers on agentic friction.
               </div>
-              <div class="demo-stick-note" style="background:#FCE7F3; border:1px solid #FBCFE8; padding:8px 12px; border-radius:6px; font-size:12px; max-width:180px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+              <div class="demo-stick-note" style="background:#FCE7F3; border-color:#FBCFE8;">
                 <strong>✦ Design System:</strong> Standardize pastel bento tokens.
               </div>
             </div>
@@ -654,7 +654,8 @@
               const noteDiv = document.createElement('div');
               const colors = ['#FEF9C3', '#EDE9FE', '#DCFCE7', '#E0F2FE', '#FCE7F3'];
               const chosen = colors[Math.floor(Math.random() * colors.length)];
-              noteDiv.style.cssText = `background:${chosen}; border:1px solid rgba(0,0,0,0.1); padding:8px 12px; border-radius:6px; font-size:12px; max-width:180px; box-shadow:0 2px 6px rgba(0,0,0,0.05);`;
+              noteDiv.className = 'demo-stick-note';
+              noteDiv.style.background = chosen;
               noteDiv.innerHTML = `<strong>✦ Note:</strong> ${escapeHTML(val)}`;
               canvasEl.appendChild(noteDiv);
               noteInput.value = '';
@@ -667,21 +668,21 @@
       if (titleEl) titleEl.textContent = 'AgentDesk — Simulated Agent Approval Cockpit';
       if (bodyEl) {
         bodyEl.innerHTML = `
-          <div class="mini-demo-sandbox" style="font-family:var(--font-mono); font-size:12px;">
-            <div style="background:#1C1C1E; color:#E5E7EB; padding:16px; border-radius:8px; line-height:1.6;">
-              <div style="color:#10B981; margin-bottom:8px;">[ORCHESTRATOR ONLINE] Multi-Agent Pipeline Ready</div>
+          <div class="mini-demo-sandbox">
+            <div class="demo-terminal">
+              <div class="term-ok">[ORCHESTRATOR ONLINE] Multi-Agent Pipeline Ready</div>
               <div>> Agent Alpha (Planner): Decomposing objective into 3 sub-actions...</div>
               <div>> Agent Beta (Executor): Awaiting human verification gate for action #2</div>
-              <div id="agent-gate-box" style="margin:14px 0; padding:12px; background:#2A2A2D; border:1px solid #F59E0B; border-radius:6px; color:#FCD34D;">
+              <div id="agent-gate-box" class="term-gate">
                 <strong>HUMAN-IN-THE-LOOP CHECKPOINT:</strong><br>
                 Action: Deploy updated token palette to staging server.<br>
                 Risk: Low (Dry run verified)
-                <div style="margin-top:10px; display:flex; gap:8px;">
-                  <button type="button" id="agent-approve-btn" style="background:#10B981; color:#fff; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer;">Approve Action</button>
-                  <button type="button" id="agent-reject-btn" style="background:#EF4444; color:#fff; border:none; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer;">Reject &amp; Rollback</button>
+                <div class="term-actions">
+                  <button type="button" id="agent-approve-btn" class="term-btn-approve">Approve Action</button>
+                  <button type="button" id="agent-reject-btn" class="term-btn-reject">Reject &amp; Rollback</button>
                 </div>
               </div>
-              <div id="agent-status-log" style="color:#9CA3AF;">Status: Blocked until approval gate satisfied.</div>
+              <div id="agent-status-log" class="term-status">Status: Blocked until approval gate satisfied.</div>
             </div>
           </div>
         `;
@@ -716,25 +717,25 @@
       if (bodyEl) {
         bodyEl.innerHTML = `
           <div class="mini-demo-sandbox">
-            <p style="font-size:13px; color:#666; margin-bottom:12px;">
+            <p class="mini-demo-note">
               Live WCAG contrast calculation for selected atelier pastel tokens:
             </p>
-            <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#EDE9FE; color:#171717; padding:10px 14px; border-radius:6px;">
+            <div class="contrast-stack">
+              <div class="contrast-row" style="background:#EDE9FE;">
                 <span><strong>Lavender Surface</strong> (#EDE9FE on #171717)</span>
-                <span style="background:#171717; color:#fff; font-size:11px; padding:2px 8px; border-radius:4px;">13.4:1 (AAA Pass)</span>
+                <span class="contrast-badge">13.4:1 (AAA Pass)</span>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#DCFCE7; color:#171717; padding:10px 14px; border-radius:6px;">
+              <div class="contrast-row" style="background:#DCFCE7;">
                 <span><strong>Sage Surface</strong> (#DCFCE7 on #171717)</span>
-                <span style="background:#171717; color:#fff; font-size:11px; padding:2px 8px; border-radius:4px;">14.2:1 (AAA Pass)</span>
+                <span class="contrast-badge">14.2:1 (AAA Pass)</span>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#FEF3C7; color:#171717; padding:10px 14px; border-radius:6px;">
+              <div class="contrast-row" style="background:#FEF3C7;">
                 <span><strong>Butter Yellow Surface</strong> (#FEF3C7 on #171717)</span>
-                <span style="background:#171717; color:#fff; font-size:11px; padding:2px 8px; border-radius:4px;">15.1:1 (AAA Pass)</span>
+                <span class="contrast-badge">15.1:1 (AAA Pass)</span>
               </div>
             </div>
-            <div style="margin-top:16px;">
-              <button type="button" id="copy-tokens-btn" class="btn btn-outline" style="font-size:12px; padding:6px 12px;">
+            <div class="demo-actions">
+              <button type="button" id="copy-tokens-btn" class="btn btn-outline">
                 Copy CSS Custom Properties
               </button>
             </div>
@@ -1113,7 +1114,7 @@
 
     if (messages.length === 0) {
       listContainer.innerHTML = `
-        <div style="padding:20px; text-align:center; color:#737373; font-size:13px;">
+        <div class="empty-state">
           No local messages recorded yet. Submit the contact form to inspect entries here.
         </div>
       `;
