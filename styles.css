@@ -7,6 +7,8 @@
    1. Design Tokens & CSS Custom Properties
    -------------------------------------------------------------------------- */
 :root {
+  color-scheme: light;
+
   /* Monochromatic Foundation */
   --bg-primary: #F8F8F5;          /* Warm off-white atelier canvas */
   --bg-card: #FFFFFF;             /* Pure crisp card surface */
@@ -421,6 +423,50 @@ button {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1;
+  box-shadow: var(--shadow-subtle);
+  transition: all var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--border-medium);
+  background-color: var(--bg-subtle);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0);
+}
+
+.theme-toggle-btn .theme-icon-sun {
+  display: none;
+}
+
+.theme-toggle-btn .theme-icon-moon {
+  display: inline;
+}
+
+[data-theme="dark"] .theme-toggle-btn .theme-icon-sun {
+  display: inline;
+}
+
+[data-theme="dark"] .theme-toggle-btn .theme-icon-moon {
+  display: none;
 }
 
 /* Availability Pill */
@@ -2509,6 +2555,10 @@ button {
     display: flex;
   }
 
+  .monogram-text {
+    display: none;
+  }
+
   .hero-section {
     padding: var(--spacing-xl) var(--spacing-md);
   }
@@ -2553,7 +2603,166 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   16. Reduced Motion Accessibility
+   16. Dark Theme
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Monochromatic Foundation (Inverted) */
+  --bg-primary: #14140F;          /* Deep warm charcoal canvas */
+  --bg-card: #1D1D19;             /* Elevated dark card surface */
+  --bg-subtle: #26261F;           /* Deeper neutral */
+  --bg-hover: #303027;            /* Hover neutral */
+
+  --text-primary: #F4F3EE;        /* Warm off-white editorial text */
+  --text-secondary: #A8A79D;      /* Muted grey */
+  --text-tertiary: #73726A;       /* Subtle meta caption */
+  --text-inverted: #14140F;       /* Inverted text for light surfaces */
+
+  --border-light: #302F28;
+  --border-medium: #43413A;
+  --border-dark: #F4F3EE;
+
+  /* Pastel Bento Palette (Deep & Desaturated) */
+  --pastel-lavender-bg: #2A2338;
+  --pastel-lavender-border: #3D3350;
+  --pastel-lavender-accent: #C7B8FA;
+
+  --pastel-sage-bg: #1E2A21;
+  --pastel-sage-border: #2E3E33;
+  --pastel-sage-accent: #8AD79E;
+
+  --pastel-blue-bg: #1A2733;
+  --pastel-blue-border: #293C4D;
+  --pastel-blue-accent: #7CC6F0;
+
+  --pastel-yellow-bg: #2A2415;
+  --pastel-yellow-border: #3E3520;
+  --pastel-yellow-accent: #F0C868;
+
+  --pastel-pink-bg: #2C1E25;
+  --pastel-pink-border: #402C36;
+  --pastel-pink-accent: #F3A3C6;
+
+  --pastel-beige-bg: #28231C;
+  --pastel-beige-border: #3A3327;
+  --pastel-beige-accent: #E0A96A;
+
+  /* Deeper Shadows for dark surfaces */
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-modal: 0 20px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Smooth cross-fade when switching themes */
+body {
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Header */
+[data-theme="dark"] .site-header {
+  background-color: rgba(20, 20, 15, 0.92);
+}
+
+/* Buttons with hardcoded hover/surface colors */
+[data-theme="dark"] .availability-pill {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .assistant-pill-btn:hover,
+[data-theme="dark"] .btn-tertiary:hover {
+  background-color: #342C46;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background-color: #FFFFFF;
+}
+
+/* Hero & canvas surfaces */
+[data-theme="dark"] .hero-statement {
+  color: #D8D7D0;
+}
+
+[data-theme="dark"] .visual-canvas-wrapper {
+  background-color: #191914;
+}
+
+[data-theme="dark"] .canvas-tag {
+  background-color: rgba(29, 29, 25, 0.9);
+}
+
+[data-theme="dark"] .canvas-tip {
+  background-color: rgba(29, 29, 25, 0.8);
+}
+
+/* Bento tiles with hardcoded surfaces */
+[data-theme="dark"] .tile-lavender-accent {
+  background-color: #2A2338;
+  border-color: #3D3350;
+}
+
+[data-theme="dark"] .tile-soft-rose {
+  background-color: #2C1E25;
+  border-color: #402C36;
+}
+
+[data-theme="dark"] .flip-trigger-btn {
+  background-color: rgba(29, 29, 25, 0.85);
+}
+
+[data-theme="dark"] .flip-trigger-btn:hover {
+  background-color: #303027;
+}
+
+[data-theme="dark"] .tile-callout {
+  color: #CFCEC7;
+}
+
+[data-theme="dark"] .proj-pill,
+[data-theme="dark"] .badge-tag,
+[data-theme="dark"] .verified-pill,
+[data-theme="dark"] .step-chip,
+[data-theme="dark"] .pill-tag {
+  background-color: rgba(29, 29, 25, 0.85);
+}
+
+[data-theme="dark"] .tile-footer {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Inverted-foreground elements (bg is light text-primary in dark mode) */
+[data-theme="dark"] .avatar-monogram,
+[data-theme="dark"] .footer-monogram,
+[data-theme="dark"] .avatar-user,
+[data-theme="dark"] .chat-send-btn,
+[data-theme="dark"] .toast {
+  color: var(--text-inverted);
+}
+
+[data-theme="dark"] .message-user .message-meta {
+  color: #4A4A44;
+}
+
+/* Forms & local message inspector */
+[data-theme="dark"] .form-control:focus {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .form-group.has-error .form-control {
+  background-color: #3A2327;
+}
+
+[data-theme="dark"] .local-msg-item {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .notice-text {
+  color: #F5D9A0;
+}
+
+/* --------------------------------------------------------------------------
+   17. Reduced Motion Accessibility
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -13,6 +13,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Road+Rage&family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Apply saved theme before paint to prevent flash of incorrect theme -->
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('oa_portfolio_theme');
+        var saved = null;
+        try { saved = raw ? JSON.parse(raw) : null; } catch (e) { saved = raw; }
+        var theme = (saved === 'dark' || saved === 'light')
+          ? saved
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- Skip to Content for Accessibility -->
@@ -38,7 +55,7 @@
         <ul class="nav-list">
           <li><a href="#hero" class="nav-link active">Home</a></li>
           <li><a href="#about-section" class="nav-link">About</a></li>
-          <li><a href="#bento-section" class="nav-link">Bento Hub</a></li>
+          <li><a href="#bento-section" class="nav-link">Practice Hub</a></li>
           <li><a href="#work-section" class="nav-link">Work</a></li>
           <li><a href="#approach-section" class="nav-link">Approach</a></li>
           <li><a href="#contact-section" class="nav-link">Contact</a></li>
@@ -47,10 +64,16 @@
 
       <!-- Availability Indicator & Quick Actions -->
       <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle light and dark theme">
+          <span class="theme-icon theme-icon-sun" aria-hidden="true">&#9728;&#65038;</span>
+          <span class="theme-icon theme-icon-moon" aria-hidden="true">&#9790;</span>
+        </button>
+
         <!-- Interactive Availability Pill -->
         <button id="availability-pill" class="availability-pill" aria-label="Toggle availability status editor" title="Click to edit availability">
           <span class="status-pulse-dot" id="status-pulse-dot"></span>
-          <span class="status-label" id="status-display-text">Available for select projects</span>
+          <span class="status-label">Available</span>
           <span class="status-edit-hint" aria-hidden="true">✎</span>
         </button>
 
@@ -74,7 +97,7 @@
       <ul class="mobile-nav-list">
         <li><a href="#hero" class="mobile-nav-link">Home</a></li>
         <li><a href="#about-section" class="mobile-nav-link">About</a></li>
-        <li><a href="#bento-section" class="mobile-nav-link">Bento Overview</a></li>
+        <li><a href="#bento-section" class="mobile-nav-link">Practice Hub</a></li>
         <li><a href="#work-section" class="mobile-nav-link">Selected Work</a></li>
         <li><a href="#approach-section" class="mobile-nav-link">My Approach</a></li>
         <li><a href="#contact-section" class="mobile-nav-link">Contact</a></li>

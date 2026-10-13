@@ -13,7 +13,8 @@
   const STORAGE_KEYS = {
     AVAILABILITY: 'oa_portfolio_availability_status',
     MESSAGES: 'oa_portfolio_contact_messages',
-    ASSISTANT_CHAT: 'oa_portfolio_assistant_chat_history'
+    ASSISTANT_CHAT: 'oa_portfolio_assistant_chat_history',
+    THEME: 'oa_portfolio_theme'
   };
 
   const DEFAULT_AVAILABILITY = 'Available for select projects';
@@ -109,6 +110,7 @@
         localStorage.removeItem(STORAGE_KEYS.AVAILABILITY);
         localStorage.removeItem(STORAGE_KEYS.MESSAGES);
         localStorage.removeItem(STORAGE_KEYS.ASSISTANT_CHAT);
+        localStorage.removeItem(STORAGE_KEYS.THEME);
         return true;
       } catch (err) {
         console.warn('LocalStorage clear error:', err);
@@ -190,10 +192,8 @@
   }
 
   function updateAvailabilityDisplay(statusText) {
-    const headerDisplay = document.getElementById('status-display-text');
     const aboutDisplay = document.getElementById('about-status-text');
 
-    if (headerDisplay) headerDisplay.textContent = statusText;
     if (aboutDisplay) aboutDisplay.textContent = statusText;
   }
 
@@ -321,9 +321,14 @@
     function draw() {
       ctx.clearRect(0, 0, width, height);
 
+      const isDark = currentCanvasTheme();
+      const lineRGB = isDark ? '244, 243, 238' : '23, 23, 23';
+      const glowColor = isDark ? 'rgba(29, 29, 25, 0.85)' : 'rgba(255, 255, 255, 0.8)';
+      const labelColor = isDark ? '#B9B8B0' : '#404040';
+
       // Draw subtle background grid dots
       const gridSpacing = 28;
-      ctx.fillStyle = '#E8E8E2';
+      ctx.fillStyle = isDark ? '#33332C' : '#E8E8E2';
       for (let x = 14; x < width; x += gridSpacing) {
         for (let y = 14; y < height; y += gridSpacing) {
           ctx.beginPath();
@@ -365,7 +370,7 @@
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(23, 23, 23, ${alpha * 0.18})`;
+            ctx.strokeStyle = `rgba(${lineRGB}, ${alpha * 0.18})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -377,18 +382,18 @@
         // Node outer glow ring
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius + 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillStyle = glowColor;
         ctx.fill();
 
         // Node center
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = node.color;
+        ctx.fillStyle = (isDark && node.color === '#171717') ? '#F4F3EE' : node.color;
         ctx.fill();
 
         // Label
         ctx.font = '500 10px "Plus Jakarta Sans", sans-serif';
-        ctx.fillStyle = '#404040';
+        ctx.fillStyle = labelColor;
         ctx.textAlign = 'center';
         ctx.fillText(node.label, node.x, node.y + node.radius + 14);
       });
@@ -1081,6 +1086,7 @@
         Storage.clearAllPortfolioData();
         updateAvailabilityDisplay(DEFAULT_AVAILABILITY);
         updateSavedMessageCount();
+        applyTheme(getPreferredTheme());
 
         // Also flip all cards back to front
         document.querySelectorAll('.bento-card').forEach(card => card.classList.remove('flipped'));
@@ -1146,7 +1152,74 @@
   }
 
   /* ==========================================================================
-     12. Navigation & Mobile Drawer
+     12. Theme (Light / Dark Mode)
+     ========================================================================== */
+  function getPreferredTheme() {
+    const saved = Storage.get(STORAGE_KEYS.THEME, null);
+    if (saved === 'dark' || saved === 'light') return saved;
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+      const isDark = theme === 'dark';
+      toggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      toggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    const themeNote = document.querySelector('.footer-theme-note');
+    if (themeNote) {
+      themeNote.textContent = theme === 'dark' ? 'Dark Theme Atelier' : 'Light Theme Atelier';
+    }
+  }
+
+  function setTheme(theme, persist = true) {
+    applyTheme(theme);
+    if (persist) {
+      Storage.set(STORAGE_KEYS.THEME, theme);
+    }
+  }
+
+  function initTheme() {
+    // Theme may already be applied by the inline head script; sync UI state.
+    const current = document.documentElement.getAttribute('data-theme') || getPreferredTheme();
+    applyTheme(current);
+
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        setTheme(next);
+        showToast(next === 'dark' ? 'Dark mode enabled' : 'Light mode enabled');
+      });
+    }
+
+    // Follow system changes until the visitor makes an explicit choice.
+    if (window.matchMedia) {
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      const onSystemChange = (e) => {
+        if (Storage.get(STORAGE_KEYS.THEME, null) === null) {
+          setTheme(e.matches ? 'dark' : 'light', false);
+        }
+      };
+      if (media.addEventListener) {
+        media.addEventListener('change', onSystemChange);
+      } else if (media.addListener) {
+        media.addListener(onSystemChange);
+      }
+    }
+  }
+
+  function currentCanvasTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  /* ==========================================================================
+     13. Navigation & Mobile Drawer
      ========================================================================== */
   function initNavigation() {
     const mobileBtn = document.getElementById('mobile-menu-toggle');
@@ -1205,9 +1278,10 @@
   }
 
   /* ==========================================================================
-     13. Lifecycle Initialization
+     14. Lifecycle Initialization
      ========================================================================== */
   document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     initAvailabilitySystem();
     initBentoFlip();
     initHeroCanvas();
