@@ -662,28 +662,23 @@ button {
   font-weight: 400;
 }
 
-/* Hero Name — Minimal Interactive Shimmer on Hover */
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .hero-title {
-    display: inline-block;
-    background-image: linear-gradient(
-      90deg,
-      var(--text-primary) 0%,
-      var(--text-primary) 45%,
-      var(--pastel-lavender-accent) 50%,
-      var(--text-primary) 55%,
-      var(--text-primary) 100%
-    );
-    background-size: 300% 100%;
-    background-position: 0% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: background-position 900ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
+/* Hero Name — Random Per-Letter Jitter on Hover */
+.jitter-letter {
+  display: inline-block;
+  will-change: transform;
+}
 
-  .hero-title:hover {
-    background-position: 100% 0;
+.hero-title:hover .jitter-letter {
+  animation: letter-jitter var(--jit-dur, 220ms) ease-in-out infinite alternate;
+  animation-delay: var(--jit-delay, 0ms);
+}
+
+@keyframes letter-jitter {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(var(--jx, 0px), var(--jy, 0px)) rotate(var(--jr, 0deg));
   }
 }
 

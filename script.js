@@ -405,6 +405,50 @@
   }
 
   /* ==========================================================================
+     6b. Hero Name Per-Letter Jitter
+     ========================================================================== */
+  function initNameJitter() {
+    const title = document.querySelector('.hero-title');
+    if (!title) return;
+
+    // Preserve the full, readable name for assistive technology.
+    title.setAttribute('aria-label', title.textContent.replace(/\s+/g, ' ').trim());
+
+    const randomBetween = (min, max) => min + Math.random() * (max - min);
+
+    const wrapLetters = (node) => {
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.textContent;
+          if (!text) return;
+
+          const frag = document.createDocumentFragment();
+          for (const char of text) {
+            if (/\s/.test(char)) {
+              frag.appendChild(document.createTextNode(char));
+              continue;
+            }
+            const span = document.createElement('span');
+            span.className = 'jitter-letter';
+            span.textContent = char;
+            span.style.setProperty('--jx', randomBetween(-3, 3).toFixed(2) + 'px');
+            span.style.setProperty('--jy', randomBetween(-3, 3).toFixed(2) + 'px');
+            span.style.setProperty('--jr', randomBetween(-6, 6).toFixed(2) + 'deg');
+            span.style.setProperty('--jit-dur', Math.round(randomBetween(160, 360)) + 'ms');
+            span.style.setProperty('--jit-delay', Math.round(randomBetween(0, 180)) + 'ms');
+            frag.appendChild(span);
+          }
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'BR') {
+          wrapLetters(child);
+        }
+      });
+    };
+
+    wrapLetters(title);
+  }
+
+  /* ==========================================================================
      7. Project Showcase Filters & Interactive Modals
      ========================================================================== */
   function initProjectShowcase() {
@@ -1284,6 +1328,7 @@
     initTheme();
     initAvailabilitySystem();
     initBentoFlip();
+    initNameJitter();
     initHeroCanvas();
     initProjectShowcase();
     initPortfolioAssistant();
