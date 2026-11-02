@@ -812,11 +812,10 @@
     const promptChips = document.querySelectorAll('.prompt-chip');
     const clearBtn = document.getElementById('clear-chat-btn');
     const quickTrigger = document.getElementById('quick-assistant-btn');
-    const headerTrigger = document.getElementById('assistant-trigger-btn');
     const mobileTrigger = document.getElementById('mobile-assistant-trigger');
 
     // Smooth scroll to assistant on triggers
-    [quickTrigger, headerTrigger, mobileTrigger].forEach(btn => {
+    [quickTrigger, mobileTrigger].forEach(btn => {
       if (btn) {
         btn.addEventListener('click', () => {
           const assistantSec = document.getElementById('assistant-section');
