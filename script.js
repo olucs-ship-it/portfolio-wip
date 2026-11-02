@@ -307,15 +307,46 @@
 
     let mouse = { x: -1000, y: -1000, active: false };
 
-    canvas.addEventListener('mousemove', (e) => {
+    const portraitImg = document.getElementById('hero-portrait-img');
+    const ambientGlow = document.getElementById('hero-ambient-glow');
+    const container = canvas.closest('.hero-visual-card') || canvas;
+
+    container.addEventListener('mousemove', (e) => {
       const rect = canvas.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
       mouse.active = true;
+
+      // 3D Parallax on Portrait & Adaptive Glow
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = (mouse.x - cx) / cx;
+      const dy = (mouse.y - cy) / cy;
+
+      if (portraitImg) {
+        portraitImg.style.transform = `translate3d(${dx * 6}px, ${dy * 3}px, 0)`;
+      }
+      if (ambientGlow) {
+        const glowX = 50 + dx * 8;
+        const glowY = 36 + dy * 5;
+        const isDark = currentCanvasTheme();
+        const a1 = isDark ? 0.22 : 0.14;
+        const a2 = isDark ? 0.12 : 0.06;
+        ambientGlow.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(245, 158, 11, ${a1}) 0%, rgba(217, 119, 6, ${a2}) 32%, transparent 70%)`;
+      }
     });
 
-    canvas.addEventListener('mouseleave', () => {
+    container.addEventListener('mouseleave', () => {
       mouse.active = false;
+      if (portraitImg) {
+        portraitImg.style.transform = 'translate3d(0, 0, 0)';
+      }
+      if (ambientGlow) {
+        const isDark = currentCanvasTheme();
+        const a1 = isDark ? 0.22 : 0.14;
+        const a2 = isDark ? 0.12 : 0.06;
+        ambientGlow.style.background = `radial-gradient(circle at 50% 36%, rgba(245, 158, 11, ${a1}) 0%, rgba(217, 119, 6, ${a2}) 32%, transparent 70%)`;
+      }
     });
 
     function draw() {
@@ -345,6 +376,18 @@
         // Bounce on borders
         if (node.x < 30 || node.x > width - 30) node.vx *= -1;
         if (node.y < 30 || node.y > height - 30) node.vy *= -1;
+
+        // Head clearance zone (drift smoothly around head & shoulders)
+        const headCenterX = width * 0.5;
+        const headCenterY = height * 0.24;
+        const headRadius = 80;
+        const dHeadX = node.x - headCenterX;
+        const dHeadY = node.y - headCenterY;
+        const distHead = Math.sqrt(dHeadX * dHeadX + dHeadY * dHeadY);
+        if (distHead < headRadius && distHead > 0) {
+          node.x += (dHeadX / distHead) * 0.7;
+          node.y += (dHeadY / distHead) * 0.7;
+        }
 
         // Mouse attraction / gentle repel
         if (mouse.active) {

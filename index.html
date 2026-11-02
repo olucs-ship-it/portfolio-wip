@@ -185,11 +185,27 @@
           </div>
         </div>
 
-        <!-- Abstract Interactive Canvas Visual -->
+        <!-- Abstract Interactive Canvas Visual with Studio Portrait & Ambient Glow -->
         <div class="hero-visual-card" id="hero-visual-container">
-          <div class="visual-canvas-wrapper">
-            <canvas id="hero-interactive-canvas" width="500" height="420"
+          <div class="visual-canvas-wrapper" id="hero-canvas-wrapper">
+            <!-- Layer 1: Adaptive Ambient Glow Backlight -->
+            <div class="hero-ambient-glow" id="hero-ambient-glow" aria-hidden="true"></div>
+
+            <!-- Layer 2: Orbiting Interactive Canvas Network (Behind Portrait) -->
+            <canvas id="hero-interactive-canvas" width="500" height="380"
               aria-label="Interactive generative design &amp; agentic node graph canvas"></canvas>
+
+            <!-- Layer 3: Studio Portrait with Smooth Velvet Bottom Fade -->
+            <div class="hero-portrait-wrapper" aria-hidden="true">
+              <img src="cutout pix/hero_portrait_studio.png"
+                id="hero-portrait-img"
+                class="hero-portrait-img"
+                alt="Olusegun Immanuel Adeleye"
+                loading="eager"
+                decoding="async">
+            </div>
+
+            <!-- Layer 4: Floating Synergies Badge & Interactive Hint -->
             <div class="canvas-overlay-details">
               <div class="canvas-tag">
                 <span class="pulse-indicator"></span>
