@@ -414,7 +414,7 @@
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = `rgba(${lineRGB}, ${alpha * 0.18})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.75;
             ctx.stroke();
           }
         }
