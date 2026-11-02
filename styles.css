@@ -786,7 +786,7 @@ button {
   background-color: var(--bg-card);
   border: 0.05px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-lg);
-  padding: 4px;
+  padding: 1px;
   box-shadow: var(--shadow-card);
   position: relative;
   width: 100%;
