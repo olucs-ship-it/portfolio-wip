@@ -340,11 +340,20 @@ button {
 }
 
 .btn-arrow {
+  display: inline-block;
   transition: transform var(--transition-fast);
 }
 
 .btn:hover .btn-arrow {
   transform: translateX(2px);
+}
+
+.btn-arrow-down {
+  display: inline-block;
+}
+
+.btn:hover .btn-arrow-down {
+  transform: translateY(2px);
 }
 
 .full-width {
