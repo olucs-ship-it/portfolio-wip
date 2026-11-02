@@ -285,13 +285,13 @@
     if (!ctx) return;
 
     let width = (canvas.width = canvas.parentElement.clientWidth || 500);
-    let height = (canvas.height = 380);
+    let height = (canvas.height = canvas.parentElement.clientHeight || 642);
 
     // Responsive Canvas Resize
     window.addEventListener('resize', () => {
       if (canvas.parentElement) {
         width = canvas.width = canvas.parentElement.clientWidth || 500;
-        height = canvas.height = 380;
+        height = canvas.height = canvas.parentElement.clientHeight || 642;
       }
     });
 

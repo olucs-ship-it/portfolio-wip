@@ -658,7 +658,7 @@ button {
   max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 520px;
+  grid-template-columns: 1fr 500px;
   align-items: center;
   gap: var(--spacing-2xl);
 }
@@ -790,7 +790,8 @@ button {
   box-shadow: var(--shadow-card);
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 500px;
+  height: 650px;
   justify-self: end;
 }
 
@@ -804,7 +805,7 @@ button {
   overflow: hidden;
   background-color: #FAF9F6;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  height: 380px;
+  height: 100%;
 }
 
 [data-theme="dark"] .visual-canvas-wrapper {
@@ -864,7 +865,7 @@ button {
 
 .hero-portrait-img {
   height: 100%;
-  max-height: 380px;
+  max-height: 642px;
   width: auto;
   object-fit: contain;
   object-position: bottom;
@@ -3038,6 +3039,11 @@ button {
     padding: var(--spacing-2xl) var(--spacing-md);
   }
 
+  .hero-visual-card {
+    height: 440px;
+    max-width: 100%;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
@@ -3121,6 +3127,11 @@ button {
 
   .hero-section {
     padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .hero-visual-card {
+    height: 440px;
+    max-width: 100%;
   }
 
   .hero-title {
@@ -3223,6 +3234,11 @@ button {
 
   .assistant-pill-btn>span:not(.ai-sparkle-icon) {
     display: none;
+  }
+
+  .hero-visual-card {
+    height: 440px;
+    max-width: 100%;
   }
 
   .hero-title {
