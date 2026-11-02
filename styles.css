@@ -784,7 +784,7 @@ button {
 /* Hero Canvas Visual */
 .hero-visual-card {
   background-color: var(--bg-card);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 0.05px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-lg);
   padding: var(--spacing-md);
   box-shadow: var(--shadow-card);
