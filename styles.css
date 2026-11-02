@@ -658,7 +658,7 @@ button {
   max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr 520px;
   align-items: center;
   gap: var(--spacing-2xl);
 }
@@ -789,6 +789,9 @@ button {
   padding: 4px;
   box-shadow: var(--shadow-card);
   position: relative;
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
 }
 
 [data-theme="dark"] .hero-visual-card {
@@ -2957,6 +2960,10 @@ button {
   .hero-container {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
+  }
+
+  .hero-visual-card {
+    justify-self: center;
   }
 
   .bento-grid {
