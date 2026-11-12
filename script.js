@@ -1074,7 +1074,12 @@
             })
           });
 
-          const result = await response.json();
+          let result;
+          try {
+            result = await response.json();
+          } catch (jsonErr) {
+            result = { success: response.ok, message: response.statusText };
+          }
 
           if (response.ok && result.success) {
             // Store local copy for audit & history
