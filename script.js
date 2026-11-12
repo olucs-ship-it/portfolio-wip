@@ -1000,8 +1000,8 @@
     const viewLogBtn = document.getElementById('view-local-messages-btn');
     const clearLogBtn = document.getElementById('clear-local-messages-btn');
 
-    // Web3Forms Public Access Key (replace with your key from web3forms.com)
-    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE';
+    // Web3Forms Public Access Key
+    const WEB3FORMS_ACCESS_KEY = '00eeade4-6076-4c19-bcde-af6c915cad1d';
 
     updateSavedMessageCount();
 
