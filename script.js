@@ -987,7 +987,7 @@
   }
 
   /* ==========================================================================
-     9. Contact Form & Local Persistence
+     9. Contact Form & Live Web3Forms Dispatch + Local Persistence
      ========================================================================== */
   function initContactForm() {
     const form = document.getElementById('contact-form');
@@ -995,19 +995,32 @@
     const emailInput = document.getElementById('contact-email');
     const subjectInput = document.getElementById('contact-subject');
     const messageInput = document.getElementById('contact-message');
+    const botcheckInput = document.getElementById('botcheck');
     const savedCountEl = document.getElementById('saved-messages-count');
     const viewLogBtn = document.getElementById('view-local-messages-btn');
     const clearLogBtn = document.getElementById('clear-local-messages-btn');
 
+    // Web3Forms Public Access Key (replace with your key from web3forms.com)
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE';
+
     updateSavedMessageCount();
 
     if (form) {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Perform comprehensive client validation
         const isValid = validateContactForm();
         if (!isValid) return;
+
+        // Anti-spam honeypot verification
+        if (botcheckInput && botcheckInput.checked) {
+          console.warn('Bot submission blocked.');
+          return;
+        }
+
+        const submitBtn = document.getElementById('contact-submit-btn');
+        const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
 
         const newSubmission = {
           id: 'msg_' + Date.now(),
@@ -1025,15 +1038,67 @@
           message: messageInput.value.trim()
         };
 
-        const existingMessages = Storage.get(STORAGE_KEYS.MESSAGES, []);
-        existingMessages.push(newSubmission);
-        Storage.set(STORAGE_KEYS.MESSAGES, existingMessages);
+        // If access key is placeholder, gracefully fallback to LocalStorage
+        if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
+          const existingMessages = Storage.get(STORAGE_KEYS.MESSAGES, []);
+          existingMessages.push(newSubmission);
+          Storage.set(STORAGE_KEYS.MESSAGES, existingMessages);
 
-        // Feedback to user
-        showToast('Message validated & logged to browser storage (Demo Mode)');
-        form.reset();
-        clearValidationErrors();
-        updateSavedMessageCount();
+          showToast('Message validated & saved locally! (Add your Web3Forms Access Key to activate live email dispatch)');
+          form.reset();
+          clearValidationErrors();
+          updateSavedMessageCount();
+          return;
+        }
+
+        // Active Web3Forms transmission
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Transmitting Message...</span>';
+        }
+
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              name: newSubmission.name,
+              email: newSubmission.email,
+              subject: newSubmission.subject || 'Portfolio Inquiry from ' + newSubmission.name,
+              message: newSubmission.message,
+              from_name: 'Olusegun Adeleye Portfolio'
+            })
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            // Store local copy for audit & history
+            const existingMessages = Storage.get(STORAGE_KEYS.MESSAGES, []);
+            existingMessages.push(newSubmission);
+            Storage.set(STORAGE_KEYS.MESSAGES, existingMessages);
+
+            showToast('Message sent directly to Olusegun! Thank you.');
+            form.reset();
+            clearValidationErrors();
+            updateSavedMessageCount();
+          } else {
+            console.error('Web3Forms dispatch error:', result);
+            showToast(result.message || 'Dispatch error. Please email segunmanuelleye@gmail.com directly.');
+          }
+        } catch (err) {
+          console.error('Network error during Web3Forms submission:', err);
+          showToast('Network error. Please email segunmanuelleye@gmail.com directly.');
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
+          }
+        }
       });
 
       // Real-time error clearance on input
