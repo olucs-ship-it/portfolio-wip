@@ -248,8 +248,8 @@
             card.classList.remove('flipped');
           }
         });
-        flipAllBtn.innerHTML = allFlippedState 
-          ? '<span class="icon-refresh">↺</span> Flip to Front' 
+        flipAllBtn.innerHTML = allFlippedState
+          ? '<span class="icon-refresh">↺</span> Flip to Front'
           : '<span class="icon-refresh">↻</span> Flip All Tiles';
       });
     }
