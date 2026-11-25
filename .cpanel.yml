@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html/
+    - /bin/cp -f index.html $DEPLOYPATH
+    - /bin/cp -f styles.css $DEPLOYPATH
+    - /bin/cp -f script.js $DEPLOYPATH
+    - /bin/cp -f favicon.svg $DEPLOYPATH
+    - /bin/cp -f og-image.png $DEPLOYPATH
+    - /bin/mkdir -p "${DEPLOYPATH}cutout pix"
+    - /bin/cp -f "cutout pix/hero_portrait_studio.png" "${DEPLOYPATH}cutout pix/"
+
