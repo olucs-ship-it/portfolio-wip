@@ -31,3 +31,4 @@ jobs:
           local-dir: ./deploy-dist/
           server-dir: ${{ vars.FTP_TARGET_DIR || './' }}
           dangerous-clean-slate: false
+
