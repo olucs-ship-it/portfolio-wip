@@ -1249,17 +1249,14 @@
      10. Reset to Default Portfolio State
      ========================================================================== */
   function initResetHandlers() {
-    const bentoResetBtn = document.getElementById('reset-storage-btn');
     const footerResetBtn = document.getElementById('footer-reset-btn');
     const confirmResetBtn = document.getElementById('confirm-reset-btn');
 
-    [bentoResetBtn, footerResetBtn].forEach(btn => {
-      if (btn) {
-        btn.addEventListener('click', () => {
-          openModal('reset-confirm-modal');
-        });
-      }
-    });
+    if (footerResetBtn) {
+      footerResetBtn.addEventListener('click', () => {
+        openModal('reset-confirm-modal');
+      });
+    }
 
     if (confirmResetBtn) {
       confirmResetBtn.addEventListener('click', () => {
