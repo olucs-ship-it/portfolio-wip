@@ -1,0 +1,33 @@
+name: Deploy Portfolio to cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Upload production files via FTPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Stage clean production files
+        run: |
+          mkdir -p deploy-dist/"cutout pix"
+          cp index.html styles.css script.js favicon.svg og-image.png deploy-dist/
+          cp "cutout pix/hero_portrait_studio.png" deploy-dist/"cutout pix/"
+
+      - name: Sync files to cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./deploy-dist/
+          server-dir: ${{ vars.FTP_TARGET_DIR || './' }}
+          dangerous-clean-slate: false
